@@ -4,6 +4,7 @@ using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250924120933_AddMenuItem")]
+    partial class AddMenuItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,208 +126,6 @@ namespace API.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MenuItems");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Category = "Appetizer",
-                            Description = "Crispy toasted bread topped with fresh tomatoes, basil, garlic, and a drizzle of olive oil.",
-                            Image = "images/bruschetta.webp",
-                            Name = "Bruschetta",
-                            Price = 6.4900000000000002,
-                            SpecialTag = ""
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Category = "Appetizer",
-                            Description = "Mushroom caps filled with seasoned cream cheese, herbs, and breadcrumbs, baked to golden perfection.",
-                            Image = "images/stuffed_mushrooms.jpeg",
-                            Name = "Stuffed Mushrooms",
-                            Price = 7.9900000000000002,
-                            SpecialTag = "Customer Favorite"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Category = "Appetizer",
-                            Description = "Crisp romaine lettuce tossed with parmesan, crunchy croutons, and creamy Caesar dressing.",
-                            Image = "images/caesar_salad.jpg",
-                            Name = "Caesar Salad",
-                            Price = 8.4900000000000002,
-                            SpecialTag = "Light & Fresh"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Category = "Entrée",
-                            Description = "Fresh Atlantic salmon fillet grilled to perfection, served with roasted vegetables and lemon butter sauce.",
-                            Image = "images/grilled_salmon.jpg",
-                            Name = "Grilled Salmon",
-                            Price = 16.989999999999998,
-                            SpecialTag = "Chef's Choice"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Category = "Entrée",
-                            Description = "Creamy fettuccine Alfredo topped with tender grilled chicken and sprinkled with parmesan.",
-                            Image = "images/chicken_alfredo.png",
-                            Name = "Chicken Alfredo Pasta",
-                            Price = 14.99,
-                            SpecialTag = "Top Rated"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Category = "Entrée",
-                            Description = "Classic pizza with fresh mozzarella, ripe tomatoes, and aromatic basil leaves on a thin crust.",
-                            Image = "images/margherita_pizza.jpg",
-                            Name = "Margherita Pizza",
-                            Price = 12.49,
-                            SpecialTag = ""
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Category = "Dessert",
-                            Description = "Warm chocolate cake with a gooey molten center, served with a scoop of vanilla ice cream.",
-                            Image = "images/choco_lava.jpg",
-                            Name = "Chocolate Lava Cake",
-                            Price = 6.9900000000000002,
-                            SpecialTag = "Best Seller"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Category = "Dessert",
-                            Description = "Rich and creamy cheesecake topped with fresh strawberries and a drizzle of berry coulis.",
-                            Image = "images/strawberry_cheesecake.jpg",
-                            Name = "Strawberry Cheesecake",
-                            Price = 7.4900000000000002,
-                            SpecialTag = ""
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Category = "Dessert",
-                            Description = "Italian classic dessert with layers of espresso-soaked ladyfingers and mascarpone cream.",
-                            Image = "images/tiramisu.avif",
-                            Name = "Tiramisu",
-                            Price = 7.9900000000000002,
-                            SpecialTag = "Chef's Special"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Category = "Entrée",
-                            Description = "Juicy beef patty with cheddar cheese, lettuce, tomato, and pickles, served with fries.",
-                            Image = "images/classic_burger.jpg",
-                            Name = "Classic Burger",
-                            Price = 9.9900000000000002,
-                            SpecialTag = "Top Rated"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Category = "Entrée",
-                            Description = "Soft tortillas filled with grilled chicken, fresh salsa, avocado, and a drizzle of lime crema.",
-                            Image = "images/chicken_taco.webp",
-                            Name = "Chicken Taco",
-                            Price = 8.4900000000000002,
-                            SpecialTag = ""
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Category = "Entrée",
-                            Description = "A healthy wrap with hummus, mixed greens, cucumber, bell peppers, and shredded carrots.",
-                            Image = "images/veggie_wrap.jpg",
-                            Name = "Veggie Wrap",
-                            Price = 7.9900000000000002,
-                            SpecialTag = "Vegetarian"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Category = "Dessert",
-                            Description = "Rich and fudgy chocolate brownie served warm with a scoop of vanilla ice cream.",
-                            Image = "images/chocolate_brownie.jpeg",
-                            Name = "Chocolate Brownie",
-                            Price = 5.4900000000000002,
-                            SpecialTag = "Chef's Special"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Category = "Dessert",
-                            Description = "Layers of fresh seasonal fruits, yogurt, and granola, served in a glass.",
-                            Image = "images/fruit_parfait.jpg",
-                            Name = "Fruit Parfait",
-                            Price = 4.9900000000000002,
-                            SpecialTag = "Healthy Choice"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Category = "Appetizer",
-                            Description = "Toasted baguette slices topped with garlic butter and herbs, served warm.",
-                            Image = "images/garlic_bread.jpg",
-                            Name = "Garlic Bread",
-                            Price = 4.4900000000000002,
-                            SpecialTag = ""
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Category = "Appetizer",
-                            Description = "Crispy breaded mozzarella sticks served with marinara dipping sauce.",
-                            Image = "images/mozzarella_sticks.jpeg",
-                            Name = "Mozzarella Sticks",
-                            Price = 5.9900000000000002,
-                            SpecialTag = "Best Seller"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Category = "Entrée",
-                            Description = "Flour tortilla filled with seasoned beef, rice, beans, cheese, and fresh salsa.",
-                            Image = "images/beef_burrito.jpg",
-                            Name = "Beef Burrito",
-                            Price = 10.49,
-                            SpecialTag = ""
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Category = "Entrée",
-                            Description = "Grilled zucchini, bell peppers, and eggplant with pesto spread on whole-grain bread.",
-                            Image = "images/grilled_veggie_sandwich.jpg",
-                            Name = "Grilled Veggie Sandwich",
-                            Price = 8.9900000000000002,
-                            SpecialTag = "Vegetarian"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Category = "Entrée",
-                            Description = "Crispy fried fish fillets served with golden fries and tartar sauce.",
-                            Image = "images/fish_chips.jpg",
-                            Name = "Fish & Chips",
-                            Price = 12.99,
-                            SpecialTag = ""
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Category = "Dessert",
-                            Description = "Tangy lemon custard in a buttery crust topped with whipped cream.",
-                            Image = "images/lemon_tart.jpg",
-                            Name = "Lemon Tart",
-                            Price = 5.4900000000000002,
-                            SpecialTag = ""
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
