@@ -16,7 +16,7 @@ public class MenuItemController : Controller
     {
         _db = db;
         _response = new ApiResponse();
-    } 
+    }
 
     [HttpGet]
     public IActionResult GetMenuItems()
@@ -24,6 +24,23 @@ public class MenuItemController : Controller
         List<MenuItem> menuItems = _db.MenuItems.ToList();
 
         _response.Result = menuItems;
+        _response.StatusCode = HttpStatusCode.OK;
+        return Ok(_response);
+    }
+
+    [HttpGet("{id:int}", Name = "GetMenuItem")]
+    public IActionResult GetMenuItem(int id)
+    {
+        if (id == 0)
+        {
+            _response.StatusCode = HttpStatusCode.BadRequest;
+            _response.IsSuccess = false;
+            return BadRequest(_response);
+        }
+
+        MenuItem? menuItem = _db.MenuItems.FirstOrDefault(u => u.Id == id);
+
+        _response.Result = menuItem;
         _response.StatusCode = HttpStatusCode.OK;
         return Ok(_response);
     }
