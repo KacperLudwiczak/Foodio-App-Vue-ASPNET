@@ -1,0 +1,64 @@
+# ---- .NET backend (API) ----
+API/[Bb]in/
+API/[Oo]bj/
+API/[Ll]og/
+API/[Ll]ogs/
+
+# Visual Studio / Rider / VSCode
+API/.vs/
+API/.idea/
+API/.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.code-workspace
+
+# NuGet
+API/packages/
+API/*.nupkg
+API/*.snupkg
+API/*.nuspec
+API/*.nuget.props
+API/*.nuget.targets
+API/packages.lock.json
+
+# Test results & coverage
+API/[Tt]est[Rr]esult*/
+API/[Bb]uild[Ll]og.*
+API/*.coverage
+API/*.coveragexml
+API/*.testresults
+API/*.trx
+
+# Azure publish settings
+API/PublishProfiles/
+API/*.azurePubxml
+API/*.pubxml
+API/*.publishproj
+API/*.azurePubxml.user
+API/*.pubxml.user
+
+# Docker overrides
+API/*.dockerignore
+API/docker-compose.override.yml
+API/docker-compose.override.*.yml
+
+
+# ---- Frontend (Client - Vue) ----
+client/node_modules/
+client/dist/
+client/.env
+client/.env.*
+client/.cache/
+client/.output/     
+client/package-lock.json
+client/yarn.lock
+client/pnpm-lock.yaml
+
+
+# ---- General ignores ----
+*.log
+*.swp
+*.DS_Store
+Thumbs.db
