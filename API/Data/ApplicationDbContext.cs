@@ -1,15 +1,14 @@
-using Microsoft.AspNetCore.Identity;
+using API.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Data
+namespace API.Data;
+
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+
+    public ApplicationDbContext(DbContextOptions options) : base(options)
     {
 
-        public ApplicationDbContext(DbContextOptions options) : base(options)
-        {
-
-        }
     }
 }
