@@ -1,6 +1,11 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Net;
+using API.DTOs;
 using API.Models;
+using API.Utility;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API.Controllers;
 
@@ -19,6 +24,65 @@ public class AuthController : Controller
         _response = new ApiResponse();
         _userManager = userManager;
         _roleManager = roleManager;
+    }
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterRequestDTO model)
+    {
+        if (ModelState.IsValid)
+        {
+            ApplicationUser newUser = new()
+            {
+                Email = model.Email,
+                UserName = model.Email,
+                Name = model.Name,
+                NormalizedEmail = model.Email.ToUpper(),
+            };
+
+            var result = await _userManager.CreateAsync(newUser, model.Password);
+            if (result.Succeeded)
+            {
+                if (!_roleManager.RoleExistsAsync(StaticDetails.Role_Admin).GetAwaiter().GetResult())
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(StaticDetails.Role_Admin));
+                    await _roleManager.CreateAsync(new IdentityRole(StaticDetails.Role_Customer));
+                }
+                if (model.Role.Equals(StaticDetails.Role_Admin, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    await _userManager.AddToRoleAsync(newUser, StaticDetails.Role_Admin);
+                }
+                else
+                {
+                    await _userManager.AddToRoleAsync(newUser, StaticDetails.Role_Customer);
+                }
+                _response.StatusCode = HttpStatusCode.OK;
+                _response.IsSuccess = true;
+                return Ok(_response);
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    _response.ErrorMessages.Add(error.Description);
+                }
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.IsSuccess = false;
+                return BadRequest(_response);
+            }
+        }
+        else
+        {
+            _response.StatusCode = HttpStatusCode.BadRequest;
+            _response.IsSuccess = false;
+            foreach (var error in ModelState.Values)
+            {
+                foreach (var item in error.Errors)
+                {
+                    _response.ErrorMessages.Add(item.ErrorMessage);
+                }
+            }
+            return BadRequest(_response);
+        }
     }
 
 }
