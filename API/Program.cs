@@ -35,7 +35,10 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true
     };
 });
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer<JwtBearerSecuritySchemeTransformer>();
+});
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
@@ -50,3 +53,32 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
+
+internal sealed class JwtBearerSecuritySchemeTransformer(Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider authenticationSchemeProvider) : IOpenApiDocumentTransformer
+{
+    public async Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
+    {
+        var authenticationSchemes = await authenticationSchemeProvider.GetAllSchemesAsync();
+        if (authenticationSchemes.Any(authScheme => authScheme.Name == JwtBearerDefaults.AuthenticationScheme))
+        {
+            var requirement = new Dictionary<string, OpenApiSecurityScheme>
+            {
+                [JwtBearerDefaults.AuthenticationScheme] = new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    In = ParameterLocation.Header,
+                    BearerFormat = "JWT",
+                }
+            };
+            document.Components ??= new OpenApiComponents();
+            document.Components.SecuritySchemes = requirement;
+        }
+        document.Info = new()
+        {
+            Title = "API",
+            Version = "v1",
+            Description = "A simple example ASP.NET Core Web API",
+        };
+    }
+}
