@@ -1,5 +1,6 @@
 using System.Net;
 using API.Data;
+using API.DTOs;
 using API.Models;
 using API.Utility;
 using Microsoft.AspNetCore.Authorization;
@@ -48,7 +49,7 @@ public class OrderHeaderController : Controller
         _response.StatusCode = HttpStatusCode.OK;
         return Ok(_response);
     }
-    
+
     [HttpGet("{orderId:int}")]
     public ActionResult<ApiResponse> GetOrder(int orderId)
     {
@@ -63,7 +64,7 @@ public class OrderHeaderController : Controller
         OrderHeader? orderHeader = _db.OrderHeaders
             .Include(x => x.OrderDetails)
             .ThenInclude(x => x.MenuItem)
-            .FirstOrDefault(x => x.OrderHeaderId==orderId);
+            .FirstOrDefault(x => x.OrderHeaderId == orderId);
 
         if (orderHeader == null)
         {
@@ -75,5 +76,65 @@ public class OrderHeaderController : Controller
         _response.Result = orderHeader;
         _response.StatusCode = HttpStatusCode.OK;
         return Ok(_response);
+    }
+    
+    [HttpPost]
+    public ActionResult<ApiResponse> CreateOrder([FromBody] OrderHeaderCreateDTO orderHeaderDTO)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                OrderHeader orderHeader = new()
+                {
+                    PickUpName = orderHeaderDTO.PickUpName,
+                    PickUpPhoneNumber = orderHeaderDTO.PickUpPhoneNumber,
+                    PickUpEmail = orderHeaderDTO.PickUpEmail,
+                    OrderDate = DateTime.Now,
+                    OrderTotal = orderHeaderDTO.OrderTotal,
+                    Status = StaticDetails.status_confirmed,
+                    TotalItem = orderHeaderDTO.TotalItem,
+                    ApplicationUserId = orderHeaderDTO.ApplicationUserId
+                };
+
+                _db.OrderHeaders.Add(orderHeader);
+                _db.SaveChanges();
+
+                foreach(var orderDetailDTO in orderHeaderDTO.OrderDetailsDTO)
+                {
+                    OrderDetail orderDetail = new()
+                    {
+                        OrderHeaderId = orderHeader.OrderHeaderId,
+                        MenuItemId = orderDetailDTO.MenuItemId,
+                        Quantity = orderDetailDTO.Quantity,
+                        ItemName = orderDetailDTO.ItemName,
+                        Price = orderDetailDTO.Price
+                    };
+                    _db.OrderDetails.Add(orderDetail);
+                }
+                _db.SaveChanges();
+                _response.Result = orderHeader;
+                orderHeader.OrderDetails = [];
+                _response.StatusCode = HttpStatusCode.Created;
+                return CreatedAtAction(nameof(GetOrder), new { orderId = orderHeader.OrderHeaderId }, _response);
+            }
+            else
+            {
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.ErrorMessages = ModelState.Values
+                    .SelectMany(x => x.Errors)
+                    .Select(x => x.ErrorMessage)
+                    .ToList();
+                return BadRequest(_response);
+            }
+        }
+        catch (Exception ex)
+        {
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.InternalServerError;
+            _response.ErrorMessages.Add(ex.Message);
+            return StatusCode((int)HttpStatusCode.InternalServerError, _response);
+        }
     }
 }
