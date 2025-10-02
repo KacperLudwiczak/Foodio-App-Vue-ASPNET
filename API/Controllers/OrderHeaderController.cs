@@ -77,7 +77,7 @@ public class OrderHeaderController : Controller
         _response.StatusCode = HttpStatusCode.OK;
         return Ok(_response);
     }
-    
+
     [HttpPost]
     public ActionResult<ApiResponse> CreateOrder([FromBody] OrderHeaderCreateDTO orderHeaderDTO)
     {
@@ -100,7 +100,7 @@ public class OrderHeaderController : Controller
                 _db.OrderHeaders.Add(orderHeader);
                 _db.SaveChanges();
 
-                foreach(var orderDetailDTO in orderHeaderDTO.OrderDetailsDTO)
+                foreach (var orderDetailDTO in orderHeaderDTO.OrderDetailsDTO)
                 {
                     OrderDetail orderDetail = new()
                     {
@@ -117,6 +117,83 @@ public class OrderHeaderController : Controller
                 orderHeader.OrderDetails = [];
                 _response.StatusCode = HttpStatusCode.Created;
                 return CreatedAtAction(nameof(GetOrder), new { orderId = orderHeader.OrderHeaderId }, _response);
+            }
+            else
+            {
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.ErrorMessages = ModelState.Values
+                    .SelectMany(x => x.Errors)
+                    .Select(x => x.ErrorMessage)
+                    .ToList();
+                return BadRequest(_response);
+            }
+        }
+        catch (Exception ex)
+        {
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.InternalServerError;
+            _response.ErrorMessages.Add(ex.Message);
+            return StatusCode((int)HttpStatusCode.InternalServerError, _response);
+        }
+    }
+    
+    [HttpPut("{orderId:int}")]
+    public ActionResult<ApiResponse> UpdateOrder(int orderId, [FromBody] OrderHeaderUpdateDTO orderHeaderDTO)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                if(orderId != orderHeaderDTO.OrderHeaderId)
+                {
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.ErrorMessages.Add("Invalid Id");
+                    return BadRequest(_response);
+                }
+
+                OrderHeader? orderHeaderFromDb = _db.OrderHeaders.FirstOrDefault(x => x.OrderHeaderId == orderId);
+
+                if(orderHeaderFromDb == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    _response.ErrorMessages.Add("Order not found");
+                    return NotFound(_response);
+                }
+                if (!string.IsNullOrEmpty(orderHeaderDTO.PickUpName))
+                {
+                    orderHeaderFromDb.PickUpName = orderHeaderDTO.PickUpName;
+                }
+                if (!string.IsNullOrEmpty(orderHeaderDTO.PickUpPhoneNumber))
+                {
+                    orderHeaderFromDb.PickUpPhoneNumber = orderHeaderDTO.PickUpPhoneNumber;
+                }
+                if (!string.IsNullOrEmpty(orderHeaderDTO.PickUpEmail))
+                {
+                    orderHeaderFromDb.PickUpEmail = orderHeaderDTO.PickUpEmail;
+                }
+                if (!string.IsNullOrEmpty(orderHeaderDTO.Status))
+                {                    
+                    if(orderHeaderFromDb.Status.Equals(StaticDetails.status_confirmed,StringComparison.InvariantCultureIgnoreCase)
+                        && orderHeaderDTO.Status.Equals(StaticDetails.status_readyForPickUp, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        orderHeaderFromDb.Status = StaticDetails.status_readyForPickUp;
+                    }
+                    if (orderHeaderFromDb.Status.Equals(StaticDetails.status_readyForPickUp, StringComparison.InvariantCultureIgnoreCase)
+                        && orderHeaderDTO.Status.Equals(StaticDetails.status_Completed, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        orderHeaderFromDb.Status = StaticDetails.status_Completed;
+                    }
+                    if (orderHeaderDTO.Status.Equals(StaticDetails.status_Cancelled, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        orderHeaderFromDb.Status = StaticDetails.status_Cancelled;
+                    }
+                }
+                _db.SaveChanges();
+                _response.StatusCode = HttpStatusCode.NoContent;
+                return Ok(_response);
             }
             else
             {
