@@ -42,7 +42,7 @@ public class MenuItemController : Controller
             return BadRequest(_response);
         }
 
-        MenuItem? menuItem = _db.MenuItems.FirstOrDefault(u => u.Id == id);
+        MenuItem? menuItem = _db.MenuItems.FirstOrDefault(x => x.Id == id);
 
         _response.Result = menuItem;
         _response.StatusCode = HttpStatusCode.OK;
@@ -127,7 +127,7 @@ public class MenuItemController : Controller
                     return BadRequest(_response);
                 }
 
-                MenuItem? menuItemFromDb = await _db.MenuItems.FirstOrDefaultAsync(u => u.Id == id);
+                MenuItem? menuItemFromDb = await _db.MenuItems.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (menuItemFromDb == null)
                 {
@@ -204,7 +204,7 @@ public class MenuItemController : Controller
                     return BadRequest(_response);
                 }
 
-                MenuItem? menuItemFromDb = await _db.MenuItems.FirstOrDefaultAsync(u => u.Id == id);
+                MenuItem? menuItemFromDb = await _db.MenuItems.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (menuItemFromDb == null)
                 {
