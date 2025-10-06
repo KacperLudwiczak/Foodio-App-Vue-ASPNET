@@ -2,12 +2,15 @@ using System.Net;
 using API.Data;
 using API.DTOs;
 using API.Models;
+using API.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
 [Route("api/MenuItem")]
+[Authorize(Roles = StaticDetails.Role_Admin)]
 [ApiController]
 public class MenuItemController : Controller
 {
@@ -23,9 +26,22 @@ public class MenuItemController : Controller
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public IActionResult GetMenuItems()
     {
         List<MenuItem> menuItems = _db.MenuItems.ToList();
+        List<OrderDetail> orderDetailsWithRatings = _db.OrderDetails
+            .Where(x => x.Rating != null)
+            .ToList();
+
+        foreach (var menuItem in menuItems)
+        {
+            var ratings = orderDetailsWithRatings
+                .Where(x => x.MenuItemId == menuItem.Id)
+                .Select(x => x.Rating!.Value);
+            double avgRating = ratings.Any() ? ratings.Average() : 0;
+            menuItem.Rating = avgRating;
+        }
 
         _response.Result = menuItems;
         _response.StatusCode = HttpStatusCode.OK;
@@ -33,6 +49,7 @@ public class MenuItemController : Controller
     }
 
     [HttpGet("{id:int}", Name = "GetMenuItem")]
+    [AllowAnonymous]
     public IActionResult GetMenuItem(int id)
     {
         if (id == 0)
@@ -43,7 +60,21 @@ public class MenuItemController : Controller
         }
 
         MenuItem? menuItem = _db.MenuItems.FirstOrDefault(x => x.Id == id);
+        if (menuItem == null)
+        {
+            _response.StatusCode = HttpStatusCode.NotFound;
+            _response.IsSuccess = false;
+            _response.ErrorMessages = new List<string> { "Menu item not found." };
+            return NotFound(_response);
+        }
 
+        List<OrderDetail> orderDetailsWithRatings = _db.OrderDetails
+            .Where(x => x.Rating != null && x.MenuItemId == menuItem.Id)
+            .ToList();
+
+        var ratings = orderDetailsWithRatings.Select(x => x.Rating!.Value);
+        double avgRating = ratings.Any() ? ratings.Average() : 0;
+        menuItem.Rating = avgRating;
         _response.Result = menuItem;
         _response.StatusCode = HttpStatusCode.OK;
         return Ok(_response);
