@@ -8,6 +8,7 @@
             height="28px"
             class="d-inline-block align-text-top me-2"
             />
+            Foodio
         </router-link>
 
         <button
@@ -24,11 +25,6 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-                <router-link class="nav-link" :to="{ name: APP_ROUTE_NAMES.HOME }">
-                Foodio
-                </router-link>
-            </li>
             <li class="nav-item">
                 <router-link class="nav-link" :to="{ name: APP_ROUTE_NAMES.ORDER_LIST }">
                 Orders
@@ -86,6 +82,7 @@ import { APP_ROUTE_NAMES } from '@/constants/routeNames'
 </script>
 
 <style scoped>
+
 .modern-navbar {
     background-color: rgba(40, 167, 69, 0.25); 
     backdrop-filter: blur(10px);
