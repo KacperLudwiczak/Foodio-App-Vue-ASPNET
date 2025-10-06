@@ -75,23 +75,6 @@
             <li class="nav-item">
                 <button class="nav-link px-2">Logout</button>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-laptop"></i>
-                </a>
-                <ul class="dropdown-menu">
-                <li>
-                    <button class="dropdown-item">
-                    <i class="bi bi-sun"></i> Light
-                    </button>
-                </li>
-                <li>
-                    <button class="dropdown-item">
-                    <i class="bi bi-moon-fill"></i> Dark
-                    </button>
-                </li>
-                </ul>
-            </li>
             </ul>
         </div>
         </div>
