@@ -6,6 +6,8 @@
         "fudgy",
         "Hmac",
         "Kacper",
-        "mascarpone"
+        "mascarpone",
+        "persistedstate",
+        "piniaPluginPersistedstate"
     ]
 }
