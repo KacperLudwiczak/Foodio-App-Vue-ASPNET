@@ -105,7 +105,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             Id = 9,
             Name = "Tiramisu",
             Description = "Italian classic dessert with layers of espresso-soaked ladyfingers and mascarpone cream.",
-            Image = "images/tiramisu.avif",
+            Image = "images/tiramisu.png",
             Price = 7.99,
             Category = "Dessert",
             SpecialTag = "Chef's Special"
