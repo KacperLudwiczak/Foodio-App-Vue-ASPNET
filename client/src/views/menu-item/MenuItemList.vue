@@ -6,16 +6,16 @@
 
 <script setup>
 import menuitemService from '@/services/menuItemService'
-import { ref, onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 
-const menuItems = ref([])
+const menuItems = reactive([])
 const loading = ref(false)
 
 const fetchMenuItems = async () => {
     loading.value = true
     try {
-        menuItems.value = await menuitemService.getMenuItems()
-        console.log(menuItems.value)
+        var result = await menuitemService.getMenuItems()
+        menuItems.push(...result)
     } catch (error) {
         console.log('Error fetch menu items:', error)
     } finally {
