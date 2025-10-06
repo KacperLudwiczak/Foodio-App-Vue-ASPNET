@@ -12,19 +12,19 @@
             class="card-header d-flex flex-column flex-md-row justify-content-between align-items-md-center p-3"
             >
             <div>
-                <h2 class="h5 text-success">Menu Items</h2>
-                <p class="mb-0 text-muted small">Manage your restaurant's offerings</p>
+                <h2 class="h5 text-white">Menu Items</h2>
+                <p class="mb-0 text-white-50 small">Manage your restaurant's offerings</p>
             </div>
             <button
-                class="btn btn-success btn-sm gap-2 rounded-1 px-4 py-2"
+                class="btn btn-outline btn-success btn-sm gap-2 rounded-1 px-4 py-2 rounded-3"
                 @click="router.push({ name: APP_ROUTE_NAMES.CREATE_MENU_ITEM })">
-                <i class="bi bi-plus-square"></i> &nbsp;
+                <i class="bi bi-plus-circle"></i> &nbsp;
                 <span>Add Item</span>
             </button>
             </div>
             <div class="card-body p-3">
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
+                <table class="shadow-table table table-hover align-middle mb-0 rounded-3">
                 <thead>
                     <tr>
                     <th class="ps-3 small text-muted">Item</th>
@@ -50,23 +50,23 @@
                         </div>
                     </td>
                     <td>
-                        <span class="badge bg-success bg-opacity-10 text-success small">
+                        <span class="badge bg-success bg-opacity-10 text-success">
                         {{ menuItem.category }}
                         </span>
                     </td>
                     <td class="fw-semibold small">${{ menuItem.price.toFixed(2) }}</td>
                     <td>
-                        <span class="badge bg-info bg-opacity-10 text-info small">
+                        <span class="badge bg-info bg-opacity-10 text-info">
                         {{ menuItem.specialTag }}
                         </span>
                     </td>
                     <td class="pe-3 text-end">
                         <div class="d-flex gap-2 justify-content-end">
-                        <button class="btn btn-sm btn-outline-success">
-                            <i class="bi bi-pencil-square"></i>
+                        <button class="btn btn-sm btn-outline-success rounded-3">
+                            <i class="bi bi-pencil-fill"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-danger">
-                            <i class="bi bi-trash3-fill"></i>
+                        <button class="btn btn-sm btn-outline-danger rounded-3">
+                            <i class="bi bi-trash2"></i>
                         </button>
                         </div>
                     </td>
@@ -105,3 +105,24 @@ const fetchMenuItems = async () => {
 
 onMounted(fetchMenuItems)
 </script>
+
+<style scoped>
+.shadow-table {
+    background-color: rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.btn-outline {
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    background-color: rgba(40, 167, 69, 0.05);
+    transition: all 0.3s;
+}
+
+.btn-outline:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 1);
+    color: white;
+}
+</style>
