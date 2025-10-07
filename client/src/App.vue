@@ -19,7 +19,7 @@ import { RouterView } from 'vue-router'
 <style>
 .app {
   min-height: 100vh;
-  background: linear-gradient(135deg, #3eb489, #90EE90);
+  background: linear-gradient(150deg,rgba(144, 238, 144, 1) 40%, rgba(62, 180, 137, 1) 100%);
   color: #fff;
 }
 </style>

@@ -58,7 +58,7 @@
             <ul class="navbar-nav ms-auto align-items-center small">
             <li class="nav-item px-2">
                 <router-link class="nav-link px-2 position-relative" :to="{ name: APP_ROUTE_NAMES.CART }">
-                <i class="bi bi-cart3"></i>
+                <i class="bi bi-bag"></i>
                 <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger">0</span>
                 </router-link>
             </li>
