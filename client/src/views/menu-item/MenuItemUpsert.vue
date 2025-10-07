@@ -134,6 +134,7 @@ import { useRouter, useRoute } from 'vue-router'
 import menuitemService from '@/services/menuItemService'
 import { CATEGORIES } from '@/constants/constants'
 import { APP_ROUTE_NAMES } from '@/constants/routeNames'
+import { CONFIG_IMAGE_URL } from '@/constants/config'
 
 const loading = ref(false)
 const isProcessing = ref(false)
