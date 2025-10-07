@@ -22,7 +22,7 @@
                 form="menuForm"
                 class="btn btn-outline btn-success btn-sm gap-2 rounded-3 px-4 py-2"
                 >
-                Create Item
+                {{ menuItemIdForUpdate ? 'Update' : 'Create' }} Item
                 </button>
                 <button
                 type="button"
@@ -114,8 +114,8 @@
                     </div>
                     </div>
                     <img
-                    v-if="newUploadedImage_base64 != ''"
-                    :src="newUploadedImage_base64 != '' ? newUploadedImage_base64 : menuItemObj.image"
+                    v-if="menuItemIdForUpdate > 0 || newUploadedImage_base64 != ''"
+                    :src="newUploadedImage_base64 != '' ? newUploadedImage_base64 : CONFIG_IMAGE_URL + menuItemObj.image"
                     class="img-fluid w-100 mb-3 rounded"
                     style="aspect-ratio: 1/1; object-fit: cover"
                     />
@@ -199,7 +199,9 @@ const onFormSubmit = async (event) => {
     if (newUploadedImage.value) {
         formData.append('File', newUploadedImage.value)
     } else {
-        errorList.push('Image must be uploaded.')
+        if (menuItemIdForUpdate == 0) {
+            errorList.push('Image must be uploaded.')
+        }
     }
 
     if (!errorList.length) {
@@ -207,15 +209,27 @@ const onFormSubmit = async (event) => {
             formData.append(key, value)
         })
 
-        menuitemService
-            .createMenuItem(formData)
-            .then(() => {
-                alert('Menu item created')
-            })
-            .catch((err) => {
-                isProcessing.value = false
-                console.log('Create Failed', err)
-            })
+        if (menuItemIdForUpdate == 0) {
+            menuitemService
+                .createMenuItem(formData)
+                .then(() => {
+                    alert('Menu item created')
+                })
+                .catch((err) => {
+                    isProcessing.value = false
+                    console.log('Create Failed', err)
+                })
+        } else {
+            menuitemService
+                .updateMenuItem(menuItemIdForUpdate, formData)
+                .then(() => {
+                    alert('Menu item updated')
+                })
+                .catch((err) => {
+                    isProcessing.value = false
+                    console.log('Update Failed', err)
+                })
+        }
 
         console.log(menuItemObj)
     }
