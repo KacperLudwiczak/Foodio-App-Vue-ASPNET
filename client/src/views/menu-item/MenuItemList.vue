@@ -62,7 +62,12 @@
                     </td>
                     <td class="pe-3 text-end">
                         <div class="d-flex gap-2 justify-content-end">
-                        <button class="btn btn-sm btn-outline-success rounded-3">
+                        <button
+                        class="btn btn-sm btn-outline-success rounded-3"                        
+                        @click="router.push({
+                            name: APP_ROUTE_NAMES.EDIT_MENU_ITEM,
+                            params: { id: menuItem.id },
+                        })">
                             <i class="bi bi-pencil-fill"></i>
                         </button>
                         <button class="btn btn-sm btn-outline-danger rounded-3">
