@@ -137,6 +137,7 @@ import menuitemService from '@/services/menuItemService'
 import { CATEGORIES } from '@/constants/constants'
 import { APP_ROUTE_NAMES } from '@/constants/routeNames'
 import { CONFIG_IMAGE_URL } from '@/constants/config'
+import { useAlert } from '@/hooks/useAlert'
 
 const loading = ref(false)
 const isProcessing = ref(false)
@@ -147,6 +148,7 @@ const formData = new FormData()
 const router = new useRouter()
 const route = new useRoute()
 const menuItemIdForUpdate = route.params.id
+const { showError, showSuccess } = useAlert()
 
 const menuItemObj = reactive({
     name: '',
@@ -216,22 +218,24 @@ const onFormSubmit = async (event) => {
             menuitemService
                 .createMenuItem(formData)
                 .then(() => {
-                    alert('Menu item created')
+                    showSuccess('Menu item created successfully.')
                     router.push({ name: APP_ROUTE_NAMES.MENU_ITEM_LIST })
                 })
                 .catch((err) => {
                     isProcessing.value = false
+                    showError('Menu item create failed.')
                     console.log('Create Failed', err)
                 })
         } else {
             menuitemService
                 .updateMenuItem(menuItemIdForUpdate, formData)
                 .then(() => {
-                    alert('Menu item updated')
+                    showSuccess('Menu item updated successfully.')
                     router.push({ name: APP_ROUTE_NAMES.MENU_ITEM_LIST })
                 })
                 .catch((err) => {
                     isProcessing.value = false
+                    showError('Menu item update failed.')
                     console.log('Update Failed', err)
                 })
         }
