@@ -28,6 +28,7 @@
                 <button
                 type="button"
                 class="btn btn-outline btn-outline border btn-sm gap-2 rounded-3 px-4 py-2"
+                @click="router.push({ name: APP_ROUTE_NAMES.MENU_ITEM_LIST })"
                 >
                 Cancel
                 </button>
@@ -130,13 +131,17 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
 import { CATEGORIES } from '@/constants/constants'
+import { APP_ROUTE_NAMES } from '@/constants/routeNames'
 
 const loading = ref(false)
 const isProcessing = ref(false)
 const errorList = reactive([])
 const newUploadedImage = ref(null)
 const newUploadedImage_base64 = ref('')
+const formData = new FormData()
+const router = new useRouter()
 
 const menuItemObj = reactive({
     name: '',
@@ -176,7 +181,16 @@ const onFormSubmit = async (event) => {
         errorList.push('Category must be selected.')
     }
 
+    if (newUploadedImage.value) {
+        formData.append('File', newUploadedImage.value)
+    } else {
+        errorList.push('Image must be uploaded.')
+    }
+
     if (!errorList.length) {
+        Object.entries(menuItemObj).forEach(([key, value]) => {
+            formData.append(key, value)
+        })
         console.log(menuItemObj)
     }
     isProcessing.value = false
