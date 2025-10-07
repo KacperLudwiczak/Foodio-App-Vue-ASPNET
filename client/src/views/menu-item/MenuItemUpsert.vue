@@ -129,8 +129,8 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, reactive, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import menuitemService from '@/services/menuItemService'
 import { CATEGORIES } from '@/constants/constants'
 import { APP_ROUTE_NAMES } from '@/constants/routeNames'
@@ -142,6 +142,8 @@ const newUploadedImage = ref(null)
 const newUploadedImage_base64 = ref('')
 const formData = new FormData()
 const router = new useRouter()
+const route = new useRoute()
+const menuItemIdForUpdate = route.params.id
 
 const menuItemObj = reactive({
     name: '',
@@ -150,6 +152,19 @@ const menuItemObj = reactive({
     category: '',
     price: 0.0,
     image: '',
+})
+
+onMounted(async () => {
+    if (!menuItemIdForUpdate) return
+    loading.value = true
+    try {
+        const result = await menuitemService.getMenuItemById(menuItemIdForUpdate)
+        Object.assign(menuItemObj, result)
+    } catch (err) {
+        console.log('Error while fetching menu item', err)
+    } finally {
+        loading.value = false
+    }
 })
 
 const handleFileChange = (event) => {
