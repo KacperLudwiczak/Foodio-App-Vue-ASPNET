@@ -21,7 +21,9 @@
                 type="submit"
                 form="menuForm"
                 class="btn btn-outline btn-success btn-sm gap-2 rounded-3 px-4 py-2"
+                :disabled="isProcessing"
                 >
+                <span v-if="isProcessing" class="spinner-border spinner-border-sm me-2"></span>
                 {{ menuItemIdForUpdate ? 'Update' : 'Create' }} Item
                 </button>
                 <button
@@ -215,6 +217,7 @@ const onFormSubmit = async (event) => {
                 .createMenuItem(formData)
                 .then(() => {
                     alert('Menu item created')
+                    router.push({ name: APP_ROUTE_NAMES.MENU_ITEM_LIST })
                 })
                 .catch((err) => {
                     isProcessing.value = false
@@ -225,6 +228,7 @@ const onFormSubmit = async (event) => {
                 .updateMenuItem(menuItemIdForUpdate, formData)
                 .then(() => {
                     alert('Menu item updated')
+                    router.push({ name: APP_ROUTE_NAMES.MENU_ITEM_LIST })
                 })
                 .catch((err) => {
                     isProcessing.value = false
