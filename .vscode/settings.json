@@ -8,6 +8,8 @@
         "Kacper",
         "mascarpone",
         "persistedstate",
-        "piniaPluginPersistedstate"
+        "piniaPluginPersistedstate",
+        "Swal",
+        "sweetalert2"
     ]
 }
