@@ -100,23 +100,25 @@
 
                 <div class="col-lg-5">
                 <div>
-                    <img
-                    src=""
-                    class="img-fluid w-100 mb-3 rounded"
-                    style="aspect-ratio: 1/1; object-fit: cover"
-                    />
                     <div class="mb-3">
                     <label for="image" class="form-label text-white">Item Image</label>
                     <input
-                        id="image"
-                        type="file"
-                        class="form-control form-control-custom"
-                        accept="image/*"
+                    id="image"
+                    type="file"
+                    class="form-control form-control-custom"
+                    accept="image/*"
+                    @change="handleFileChange"
                     />
                     <div class="form-text text-white-50">
                         Leave empty to keep existing image
                     </div>
                     </div>
+                    <img
+                    v-if="newUploadedImage_base64 != ''"
+                    :src="newUploadedImage_base64 != '' ? newUploadedImage_base64 : menuItemObj.image"
+                    class="img-fluid w-100 mb-3 rounded"
+                    style="aspect-ratio: 1/1; object-fit: cover"
+                    />
                 </div>
                 </div>
             </div>
@@ -133,6 +135,8 @@ import { CATEGORIES } from '@/constants/constants'
 const loading = ref(false)
 const isProcessing = ref(false)
 const errorList = reactive([])
+const newUploadedImage = ref(null)
+const newUploadedImage_base64 = ref('')
 
 const menuItemObj = reactive({
     name: '',
@@ -142,6 +146,20 @@ const menuItemObj = reactive({
     price: 0.0,
     image: '',
 })
+
+const handleFileChange = (event) => {
+    isProcessing.value = true
+    const file = event.target.files[0]
+    newUploadedImage.value = file
+    if (file) {
+        const reader = new FileReader()
+        reader.onload = (event) => {
+            newUploadedImage_base64.value = event.target.result
+        }
+        reader.readAsDataURL(file)
+    }
+    isProcessing.value = false
+}
 
 const onFormSubmit = async (event) => {
     event.preventDefault()
