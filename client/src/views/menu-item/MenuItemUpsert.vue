@@ -22,7 +22,6 @@
                 form="menuForm"
                 class="btn btn-outline btn-success btn-sm gap-2 rounded-3 px-4 py-2"
                 >
-                <span class="spinner-border spinner-border-sm me-2"></span>
                 Create Item
                 </button>
                 <button
@@ -35,7 +34,7 @@
             </div>
             </div>
 
-            <div class="alert alert-danger pb-0" v-if="errorList.length > 0">
+            <div class="alert alert-warning pb-0" v-if="errorList.length > 0">
             Please fix the following errors:
             <ul>
                 <li v-for="error in errorList" :key="error">{{ error }}</li>
