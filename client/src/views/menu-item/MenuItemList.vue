@@ -13,7 +13,7 @@
             >
             <div>
                 <h2 class="h5 text-white">Menu Items</h2>
-                <p class="mb-0 text-white-50 small">Manage your restaurant's offerings</p>
+                <p class="mb-0 text-white-60 small">Manage your restaurant's offerings</p>
             </div>
             <button
                 class="btn btn-outline btn-success btn-sm gap-2 rounded-1 px-4 py-2 rounded-3"
@@ -106,7 +106,7 @@ const fetchMenuItems = async () => {
 onMounted(fetchMenuItems)
 </script>
 
-<style scoped>
+<style>
 .shadow-table {
     background-color: rgba(255, 255, 255, 0.05);
     overflow: hidden;
