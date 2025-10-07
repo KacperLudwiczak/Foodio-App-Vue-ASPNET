@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="d-flex justify-content-center align-items-center">
+        <div class="d-flex justify-content-center align-items-center" v-if="loading">
         <div
             class="spinner-grow text-success"
             style="width: 2.5rem; height: 2.5rem"
@@ -10,7 +10,7 @@
         </div>
         </div>
 
-        <div class="container">
+        <div class="container" v-else>
         <div class="mx-auto">
             <div
             class="mb-4 border-bottom d-flex justify-content-between align-items-center py-3"
@@ -78,7 +78,8 @@
                     <div class="mb-3">
                     <label for="category" class="form-label text-white">Category</label>
                     <select id="category" class="form-select form-control-custom">
-                        <option>CATEGORY</option>
+                        <option value="" selected disabled>--Select a category--</option>
+                        <option v-for="category in CATEGORIES" :key="category">{{ category }}</option>
                     </select>
                     </div>
 
@@ -120,6 +121,12 @@
         </div>
     </div>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+import { CATEGORIES } from '@/constants/constants'
+const loading = ref(false)
+</script>
 
 <style scoped>
 .form-control-custom,
