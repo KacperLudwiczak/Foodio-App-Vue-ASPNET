@@ -70,7 +70,9 @@
                         })">
                             <i class="bi bi-pencil-fill"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-danger rounded-3">
+                        <button 
+                        class="btn btn-sm btn-outline-danger rounded-3"
+                        @click="handleMenuItemDelete(menuItem.id)">
                             <i class="bi bi-trash2"></i>
                         </button>
                         </div>
@@ -87,14 +89,16 @@
 
 <script setup>
 import menuitemService from '@/services/menuItemService'
+import { ref, reactive, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAlert } from '@/hooks/useAlert'
 import { APP_ROUTE_NAMES } from '@/constants/routeNames'
 import { CONFIG_IMAGE_URL } from '@/constants/config'
-import { useRouter } from 'vue-router'
-import { ref, reactive, onMounted } from 'vue'
 
 const menuItems = reactive([])
 const loading = ref(false)
 const router = useRouter()
+const { showError, showSuccess } = useAlert()
 
 const fetchMenuItems = async () => {
     loading.value = true
@@ -109,6 +113,22 @@ const fetchMenuItems = async () => {
 }
 
 onMounted(fetchMenuItems)
+
+const handleMenuItemDelete = async (id) => {
+    loading.value = true
+    try {
+        const confirmResult = await showConfirm('Are you sure you want to delete this menu item?')
+        if (confirmResult.isConfirmed) {
+            await menuitemService.deleteMenuItem(id)
+            showSuccess('Menu item delete successfully.')
+            fetchMenuItems()
+        }
+    } catch (error) {
+        console.log('Error deleting menu item:', error)
+    } finally {
+        loading.value = false
+    }
+}
 </script>
 
 <style>
