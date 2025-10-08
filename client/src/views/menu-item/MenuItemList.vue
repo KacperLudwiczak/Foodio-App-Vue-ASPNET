@@ -98,7 +98,7 @@ import { CONFIG_IMAGE_URL } from '@/constants/config'
 const menuItems = reactive([])
 const loading = ref(false)
 const router = useRouter()
-const { showError, showSuccess } = useAlert()
+const { showConfirm, showSuccess } = useAlert()
 
 const fetchMenuItems = async () => {
     loading.value = true
