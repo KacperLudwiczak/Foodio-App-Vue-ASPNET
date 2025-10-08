@@ -101,6 +101,7 @@ const router = useRouter()
 const { showConfirm, showSuccess } = useAlert()
 
 const fetchMenuItems = async () => {
+    menuItems.length = 0
     loading.value = true
     try {
         var result = await menuitemService.getMenuItems()
@@ -115,10 +116,10 @@ const fetchMenuItems = async () => {
 onMounted(fetchMenuItems)
 
 const handleMenuItemDelete = async (id) => {
-    loading.value = true
     try {
         const confirmResult = await showConfirm('Are you sure you want to delete this menu item?')
         if (confirmResult.isConfirmed) {
+            loading.value = true
             await menuitemService.deleteMenuItem(id)
             showSuccess('Menu item delete successfully.')
             fetchMenuItems()
