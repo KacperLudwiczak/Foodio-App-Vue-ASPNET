@@ -131,13 +131,13 @@
 </template>
 
 <script setup>
+import menuitemService from '@/services/menuItemService'
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import menuitemService from '@/services/menuItemService'
+import { useAlert } from '@/hooks/useAlert'
 import { CATEGORIES } from '@/constants/constants'
 import { APP_ROUTE_NAMES } from '@/constants/routeNames'
 import { CONFIG_IMAGE_URL } from '@/constants/config'
-import { useAlert } from '@/hooks/useAlert'
 
 const loading = ref(false)
 const isProcessing = ref(false)
